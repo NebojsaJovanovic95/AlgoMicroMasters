@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream> //
 #include <vector>
 #include <algorithm>
 #include <tuple>
@@ -17,17 +18,23 @@ class JobQueue {
   vector<long long> start_times_;
 
   void WriteResponse() const {
+    ofstream outfile;
+    outfile.open ("outfile.txt");
     for (long long i = 0; i < jobs_.size(); ++i) {
+      //outfile << assigned_workers_[i] << " " << start_times_[i] << "\n";
       cout << assigned_workers_[i] << " " << start_times_[i] << "\n";
     }
+    outfile.close();
   }
 
   void ReadData() {
     long long m;
+    std::ifstream myfile ("input.txt");
+    /*myfile >> num_workers_ >> m;*/
     cin >> num_workers_ >> m;
     jobs_.resize(m);
     for(long long i = 0; i < m; ++i)
-      cin >> jobs_[i];
+      /*myfile >> jobs_[i];//*/cin >> jobs_[i];
   }
 
   bool cmp (long long index1, long long index2, vector<tuple<long long, long long, long long, long long> > &heap, long long heap_size) {
@@ -57,38 +64,6 @@ class JobQueue {
     return;
   }
 
-  void show (vector<tuple<long long, long long, long long, long long> > &heap) {
-    // works with index
-    /*
-    for (long long i = 0; i < heap.size(); i ++) {
-      auto [worker, job, start_time, duration] = heap[i];
-      cout << "worker: " << worker
-           << ", job: " << job
-           << ", start_time: " << start_time
-           << ", duration: " << duration
-           << "\n";
-    }
-    //
-    // range based works
-    for (auto node : heap) {
-      auto [worker, job, start_time, duration] = node;
-      cout << "worker: " << worker
-           << ", job: " << job
-           << ", start_time: " << start_time
-           << ", duration: " << duration
-           << "\n";
-    }
-    //*/
-    // range based doesn't work with struct binding
-    for (auto &[worker, job, start_time, duration] : heap)
-      cout << "worker: " << worker
-           << ", job: " << job
-           << ", start_time: " << start_time
-           << ", duration: " << duration
-           << "\n";
-    cout << "\n";
-  }
-
   void AssignJobs() {
     // TODO: replace this code with a faster algorithm.
     assigned_workers_.resize(jobs_.size());
@@ -111,7 +86,10 @@ class JobQueue {
     //heap(0) end time to be added to the next waiting job and sifted down
     for (long long i = num_workers_; i < jobs_.size(); i ++) {
       // read the first from the heap and save it as finished
-      auto [_worker, _job, _start_time, _duration] = heap[0];
+      long long _worker = get<0>(heap[0]);
+      long long _job = get<1>(heap[0]);
+      long long _start_time = get<2>(heap[0]);
+      long long _duration = get<3>(heap[0]);
       assigned_workers_[_job] = _worker;
       start_times_[_job] = _start_time;
       // add thje next job to the one in the heap of (0);
@@ -122,7 +100,10 @@ class JobQueue {
     // show(heap);
     // empty the heap and write the results
     while (heap_size > 0) {
-      auto [_worker, _job, _start_time, _duration] = heap[0];
+      long long _worker = get<0>(heap[0]);
+      long long _job = get<1>(heap[0]);
+      long long _start_time = get<2>(heap[0]);
+      long long _duration = get<3>(heap[0]);
       if (_job == -1)
         break;
       assigned_workers_[_job] = _worker;
