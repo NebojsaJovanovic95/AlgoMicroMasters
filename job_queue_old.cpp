@@ -36,7 +36,7 @@ class JobQueue {
     for (int i = 0; i < jobs_.size(); ++i) {
       int duration = jobs_[i];
       int next_worker = 0;
-      for (int j = 0; j < num_workers_; ++j) {
+      for (int j = 0; j < num_workers_; ++ j) {
         if (next_free_time[j] < next_free_time[next_worker])
           next_worker = j;
       }

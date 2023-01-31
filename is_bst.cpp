@@ -59,7 +59,7 @@ int main() {
   int nodes;
   cin >> nodes;
   vector<Node> tree;
-  for (int i = 0; i < nodes; ++i) {
+  for (int i = 0; i < nodes; i ++) {
     int key, left, right;
     cin >> key >> left >> right;
     tree.push_back(Node(key, left, right));

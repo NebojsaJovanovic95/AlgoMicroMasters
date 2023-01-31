@@ -18,7 +18,7 @@ int main() {
   std::cin >> n >> capacity;
   vector<int> values(n);
   vector<int> weights(n);
-  for (int i = 0; i < n; i++) {
+  for (int i = 0; i < n; i ++) {
     std::cin >> values[i] >> weights[i];
   }
 

@@ -22,7 +22,7 @@ int main() {
   std::cin >> n >> m;
   vector<vector<int> > adj(n, vector<int>());
   vector<int> visited(n);
-  for (size_t i = 0; i < m; i++) {
+  for (size_t i = 0; i < m; i ++) {
     int x, y;
     std::cin >> x >> y;
     adj[x - 1].push_back(y - 1);
