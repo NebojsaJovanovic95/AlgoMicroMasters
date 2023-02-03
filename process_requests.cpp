@@ -371,9 +371,24 @@ void print_kpi_csv(kpi log, const string &out_csv) {
 }
 
 int main(int argc, char * argv[]) {
-    vector<customer> input = read_csv("book1_input.csv");
+    string input_csv = "input.csv";
+    string customer_log_csv = "customer_log.csv";
+    string and_log_csv = "and_log.csv";
+    string kpi_csv = "kpi.csv";
+    if (argc != 1) {
+        if (argc >= 2)
+            input_csv = argv[1];
+        if (argc >= 3)
+            customer_log_csv = argv[2];
+        if (argc >= 4)
+            and_log_csv = argv[3];
+        if (argc >= 5)
+            kpi_csv = argv[4];
+    }
+
+    vector<customer> input = read_csv(input_csv);
     std::sort(input.begin(), input.end(), cmp);
-     print_customers(input);
+    // print_customers(input);
     // the input is now sorted
     vector<and_log> and_log_output;
     vector<customer_log> customer_log_output = process_customers(input, and_log_output);
@@ -382,8 +397,8 @@ int main(int argc, char * argv[]) {
     // now we have our logs, we compute our statistics
     // print_kpi(compute_kpi(customer_log_output, and_log_output));
     // print it all in a file
-    print_customer_log_csv(customer_log_output, "customer_log.csv");
-    print_and_log_csv(and_log_output, "and_log.csv");
+    print_customer_log_csv(customer_log_output, customer_log_csv);
+    print_and_log_csv(and_log_output, and_log_csv);
     // now we have our logs, we compute our statistics
-    print_kpi_csv(compute_kpi(customer_log_output, and_log_output), "kpi.csv");
+    print_kpi_csv(compute_kpi(customer_log_output, and_log_output), kpi_csv);
 }
