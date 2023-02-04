@@ -17,33 +17,38 @@ int negative_cycle(vector<vector<int> > &adj, vector<vector<int> > &cost) {
   }
   int last_relax = 0;
 
-  size_t s = 0;
-  dist[s] = 0;
-  for (size_t i = 0; i < adj.size(); i ++) {
+  for (size_t s = 0; s < adj.size(); s ++) {
+    if (dist[s] != INFINITY)
+      continue;
+    dist[s] = 0;
+    for (size_t i = 0; i < adj.size(); i ++) {
+      for (size_t u = 0; u < adj.size(); u ++) {
+        for (size_t v = 0; v < adj[u].size(); v ++) {
+          //relax(u,v)
+          if (dist[adj[u][v] ] > dist[u] + cost[u][v]) {
+            dist[adj[u][v]] = dist[u] + cost[u][v];
+            prev[adj[u][v]] = u;
+            relaxed[u] = i;
+          }
+        }
+        //std::cout << dist[u] << " ";
+      }
+      //std::cout << "\n";
+    }
     for (size_t u = 0; u < adj.size(); u ++) {
       for (size_t v = 0; v < adj[u].size(); v ++) {
         //relax(u,v)
         if (dist[adj[u][v] ] > dist[u] + cost[u][v]) {
           dist[adj[u][v]] = dist[u] + cost[u][v];
           prev[adj[u][v]] = u;
-          relaxed[u] = i;
+          relaxed[u] = adj.size();
+          last_relax = 1;
         }
       }
-      //std::cout << dist[u] << " ";
-    }
-    //std::cout << "\n";
-  }
-  for (size_t u = 0; u < adj.size(); u ++) {
-    for (size_t v = 0; v < adj[u].size(); v ++) {
-      //relax(u,v)
-      if (dist[adj[u][v] ] > dist[u] + cost[u][v]) {
-        dist[adj[u][v]] = dist[u] + cost[u][v];
-        prev[adj[u][v]] = u;
-        relaxed[u] = adj.size();
-        last_relax = 1;
-      }
     }
   }
+
+
   //std::cout << prev[0];
   return last_relax;
 }
